@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import { UserModelDocumentInterface } from "./User.model";
+import { model, Schema } from "mongoose";
 
 export interface MemeModelInterface {
   _id?: string;
@@ -12,7 +13,7 @@ export interface MemeModelInterface {
 
 export type MemeModelDocumentInterface = MemeModelInterface & Document;
 
-const memeSchema = mongoose.Schema<MemeModelInterface>(
+const memeSchema = new Schema<MemeModelInterface>(
   {
     title: {
       required: true,
@@ -25,22 +26,20 @@ const memeSchema = mongoose.Schema<MemeModelInterface>(
     },
     author: {
       required: true,
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
-    likes: [
-      { required: true, type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    ],
+    likes: [{ required: true, type: Schema.Types.ObjectId, ref: "User" }],
     tags: [{ type: String }],
     templateId: {
       required: true,
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Template",
     },
   },
   { timestamps: true }
 );
 
-const Meme = mongoose.model<MemeModelDocumentInterface>("Meme", memeSchema);
+const Meme = model<MemeModelDocumentInterface>("Meme", memeSchema);
 
 module.exports = Meme;
