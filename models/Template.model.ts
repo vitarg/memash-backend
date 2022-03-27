@@ -1,20 +1,17 @@
+import { Schema, model } from "mongoose";
 import { UserModelDocumentInterface } from "./User.model";
-import { model, Schema } from "mongoose";
-import { TemplateModelDocumentInterface } from "./Template.model";
 
-export interface MemeModelInterface {
+export interface TemplateModelInterface {
   _id?: string;
   title: string;
   img: string;
-  author: UserModelDocumentInterface;
   likes: UserModelDocumentInterface[];
-  tags: string[];
-  template: TemplateModelDocumentInterface;
+  tags: [{ type: String }];
 }
 
-export type MemeModelDocumentInterface = MemeModelInterface & Document;
+export type TemplateModelDocumentInterface = TemplateModelInterface & Document;
 
-const memeSchema = new Schema<MemeModelInterface>(
+const templateSchema = new Schema<TemplateModelInterface>(
   {
     title: {
       required: true,
@@ -26,7 +23,6 @@ const memeSchema = new Schema<MemeModelInterface>(
       type: String,
     },
     author: {
-      required: true,
       type: Schema.Types.ObjectId,
       ref: "User",
     },
@@ -41,6 +37,9 @@ const memeSchema = new Schema<MemeModelInterface>(
   { timestamps: true }
 );
 
-const Meme = model<MemeModelDocumentInterface>("Meme", memeSchema);
+const Template = model<TemplateModelDocumentInterface>(
+  "Template",
+  templateSchema
+);
 
-module.exports = Meme;
+module.exports = Template;
